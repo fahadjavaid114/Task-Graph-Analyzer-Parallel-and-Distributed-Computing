@@ -1,0 +1,215 @@
+
+============================================================================
+Question 2: Task Dependency Graph
+============================================================================
+Task weights, predecessors
+  T1: cost= 4, predecessors=[none]
+  T2: cost= 6, predecessors=[none]
+  T3: cost= 3, predecessors=[none]
+  T4: cost= 5, predecessors=[T1, T2]
+  T5: cost= 2, predecessors=[T2]
+  T6: cost= 8, predecessors=[T3]
+  T7: cost= 3, predecessors=[T4, T5]
+  T8: cost= 4, predecessors=[T5, T6]
+  T9: cost= 2, predecessors=[T7, T8]
+
+1. Start nodes: T1, T2, T3
+   Finish nodes: T9
+
+2. All start-to-finish paths (sum of task costs):
+   T1 -> T4 -> T7 -> T9: 14
+   T2 -> T4 -> T7 -> T9: 16
+   T2 -> T5 -> T7 -> T9: 13
+   T2 -> T5 -> T8 -> T9: 14
+   T3 -> T6 -> T8 -> T9: 17 [CRITICAL]
+   Critical path(s): T3 -> T6 -> T8 -> T9
+   Critical-path length: 17
+
+3. Total work: 37
+   Average degree of concurrency: 37/17 = 2.1765
+
+4. Unlimited-processor ASAP start/finish times:
+   T1: [0, 4)
+   T2: [0, 6)
+   T3: [0, 3)
+   T4: [6, 11)
+   T5: [6, 8)
+   T6: [3, 11)
+   T7: [11, 14)
+   T8: [11, 15)
+   T9: [15, 17)
+   Maximum concurrent tasks: 3
+   Interval(s) of maximum concurrency: [0, 4), [6, 8)
+
+5. Non-preemptive schedules: lowest-numbered READY task; P1, then P2, then P3
+   p=1: total time=37, speedup=37/37 = 1.0000
+     Processor  Task  Start  End
+     P1         T1    0      4
+     P1         T2    4      10
+     P1         T3    10     13
+     P1         T4    13     18
+     P1         T5    18     20
+     P1         T6    20     28
+     P1         T7    28     31
+     P1         T8    31     35
+     P1         T9    35     37
+   p=2: total time=23, speedup=37/23 = 1.6087
+     Processor  Task  Start  End
+     P1         T1    0      4
+     P2         T2    0      6
+     P1         T3    4      7
+     P2         T4    6      11
+     P1         T5    7      9
+     P1         T6    9      17
+     P2         T7    11     14
+     P1         T8    17     21
+     P1         T9    21     23
+   p=3: total time=17, speedup=37/17 = 2.1765
+     Processor  Task  Start  End
+     P1         T1    0      4
+     P2         T2    0      6
+     P3         T3    0      3
+     P3         T6    3      11
+     P1         T4    6      11
+     P2         T5    6      8
+     P1         T7    11     14
+     P2         T8    11     15
+     P1         T9    15     17
+
+============================================================================
+Question 3(a): (CS AND 2023) AND (Lahore OR Faisalabad)
+============================================================================
+Task weights, predecessors, and row IDs
+  T1: cost=10, predecessors=[none], table=CS, IDs=[101, 103, 104, 106, 107, 109]
+  T2: cost=10, predecessors=[none], table=2023, IDs=[101, 102, 104, 105, 106, 109]
+  T3: cost=10, predecessors=[none], table=Lahore, IDs=[101, 105, 107, 108, 109]
+  T4: cost=10, predecessors=[none], table=Faisalabad, IDs=[102, 103, 104, 110]
+  T5: cost=12, predecessors=[T1, T2], table=CS AND 2023, IDs=[101, 104, 106, 109]
+  T6: cost= 9, predecessors=[T3, T4], table=Lahore OR Faisalabad, IDs=[101, 102, 103, 104, 105, 107, 108, 109, 110]
+  T7: cost=13, predecessors=[T5, T6], table=Final result, IDs=[101, 104, 109]
+
+1. Start nodes: T1, T2, T3, T4
+   Finish nodes: T7
+
+2. All start-to-finish paths (sum of task costs):
+   T1 -> T5 -> T7: 35 [CRITICAL]
+   T2 -> T5 -> T7: 35 [CRITICAL]
+   T3 -> T6 -> T7: 32
+   T4 -> T6 -> T7: 32
+   Critical path(s): T1 -> T5 -> T7; T2 -> T5 -> T7
+   Critical-path length: 35
+
+3. Total work: 74
+   Average degree of concurrency: 74/35 = 2.1143
+
+4. Unlimited-processor ASAP start/finish times:
+   T1: [0, 10)
+   T2: [0, 10)
+   T3: [0, 10)
+   T4: [0, 10)
+   T5: [10, 22)
+   T6: [10, 19)
+   T7: [22, 35)
+   Maximum concurrent tasks: 4
+   Interval(s) of maximum concurrency: [0, 10)
+
+5. Non-preemptive schedules: lowest-numbered READY task; P1, then P2, then P3
+   p=1: total time=74, speedup=74/74 = 1.0000
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P1         T2    10     20
+     P1         T3    20     30
+     P1         T4    30     40
+     P1         T5    40     52
+     P1         T6    52     61
+     P1         T7    61     74
+   p=2: total time=45, speedup=74/45 = 1.6444
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P2         T2    0      10
+     P1         T3    10     20
+     P2         T4    10     20
+     P1         T5    20     32
+     P2         T6    20     29
+     P1         T7    32     45
+   p=3: total time=42, speedup=74/42 = 1.7619
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P2         T2    0      10
+     P3         T3    0      10
+     P1         T4    10     20
+     P2         T5    10     22
+     P1         T6    20     29
+     P1         T7    29     42
+
+   Final matching student IDs: [101, 104, 109]
+
+============================================================================
+Question 3(b): ((Lahore OR Faisalabad) AND 2023) AND CS
+============================================================================
+Task weights, predecessors, and row IDs
+  T1: cost=10, predecessors=[none], table=CS, IDs=[101, 103, 104, 106, 107, 109]
+  T2: cost=10, predecessors=[none], table=2023, IDs=[101, 102, 104, 105, 106, 109]
+  T3: cost=10, predecessors=[none], table=Lahore, IDs=[101, 105, 107, 108, 109]
+  T4: cost=10, predecessors=[none], table=Faisalabad, IDs=[102, 103, 104, 110]
+  T5: cost= 9, predecessors=[T3, T4], table=Lahore OR Faisalabad, IDs=[101, 102, 103, 104, 105, 107, 108, 109, 110]
+  T6: cost=15, predecessors=[T5, T2], table=(Lahore OR Faisalabad) AND 2023, IDs=[101, 102, 104, 105, 109]
+  T7: cost=11, predecessors=[T6, T1], table=Final result, IDs=[101, 104, 109]
+
+1. Start nodes: T1, T2, T3, T4
+   Finish nodes: T7
+
+2. All start-to-finish paths (sum of task costs):
+   T1 -> T7: 21
+   T2 -> T6 -> T7: 36
+   T3 -> T5 -> T6 -> T7: 45 [CRITICAL]
+   T4 -> T5 -> T6 -> T7: 45 [CRITICAL]
+   Critical path(s): T3 -> T5 -> T6 -> T7; T4 -> T5 -> T6 -> T7
+   Critical-path length: 45
+
+3. Total work: 75
+   Average degree of concurrency: 75/45 = 1.6667
+
+4. Unlimited-processor ASAP start/finish times:
+   T1: [0, 10)
+   T2: [0, 10)
+   T3: [0, 10)
+   T4: [0, 10)
+   T5: [10, 19)
+   T6: [19, 34)
+   T7: [34, 45)
+   Maximum concurrent tasks: 4
+   Interval(s) of maximum concurrency: [0, 10)
+
+5. Non-preemptive schedules: lowest-numbered READY task; P1, then P2, then P3
+   p=1: total time=75, speedup=75/75 = 1.0000
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P1         T2    10     20
+     P1         T3    20     30
+     P1         T4    30     40
+     P1         T5    40     49
+     P1         T6    49     64
+     P1         T7    64     75
+   p=2: total time=55, speedup=75/55 = 1.3636
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P2         T2    0      10
+     P1         T3    10     20
+     P2         T4    10     20
+     P1         T5    20     29
+     P1         T6    29     44
+     P1         T7    44     55
+   p=3: total time=55, speedup=75/55 = 1.3636
+     Processor  Task  Start  End
+     P1         T1    0      10
+     P2         T2    0      10
+     P3         T3    0      10
+     P1         T4    10     20
+     P1         T5    20     29
+     P1         T6    29     44
+     P1         T7    44     55
+
+   Final matching student IDs: [101, 104, 109]
+
+Done. All three graphs analyzed. Gantt charts are in: charts/
